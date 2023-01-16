@@ -6,7 +6,7 @@ import { Op } from 'sequelize'
 import path from 'path'
 import {promisify} from 'util'
 import PublishersTable from '../../database/models/publishers'
-import { books_langs, books_types } from '../../config/functions'
+import { books_langs, books_types, writeFileExpress } from '../../config/functions'
 const complete_reg = Router()
 
 complete_reg.use(isInMidOfReg)
@@ -174,22 +174,30 @@ const publisherPost = async(req:Request, res:Response, {
     }
     const user:DB_Users = getUser.get()
     try{
+        const isLicense_pdfCreated =  await writeFileExpress(license_pdf ,path.join(files_path, `${user.id}_license.pdf`))
+        if(!isLicense_pdfCreated){
+            console.log('connot create file license_pdf => /complete_reg/publisher (post)') 
+            res.status(500)
+            return res.send('server error')
+        }
+        if(publisher_image){
+            const isPublisher_imageCreated = await writeFileExpress(publisher_image ,path.join(files_path, `${user.id}_img.png`))
+            if(!isPublisher_imageCreated){
+                console.log('connot create file publisher_image => /complete_reg/publisher (post)') 
+                res.status(500)
+                return res.send('server error')
+            }
+        }
         await PublishersTable.create({
             books_langs:form.books_langs,
             books_types:form.books_types,
-            image_url:`/publisher_files/${user.id}_img.png`,
+            image_url:publisher_image ? `/publisher_files/${user.id}_img.png` : null,
             location:`${form.country}_----_${form.city}`,
             license_type:form.publisher_type,
             name:form.publisher_name,
             social:isHaveSocial ? form.social : null,
             user_id:user.id
         } as DB_Publishers , {logging:false})
-        const mvlicense_pdf = promisify(license_pdf.mv)
-        mvlicense_pdf(path.join(files_path, `${user.id}_license.pdf`))
-        if(publisher_image){
-            const mvPublusherImg = promisify(publisher_image.mv)
-            await mvPublusherImg(path.join(files_path, `${user.id}_img.png`))
-        }
     }catch(err){
         console.log('err => /complete_reg/publisher (post)') 
         console.log(err)

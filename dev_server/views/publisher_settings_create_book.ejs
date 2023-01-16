@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>edit</title>
+    <link rel="stylesheet" href="/all/css/all.min.css">
+    <link rel="stylesheet" href="/all/settings_all.css">
+    <link rel="stylesheet" href="/publisher_settings/create_book/styles/index.css">
+</head>
+<body>
+
+    <!-- puubps -->
+    <div class="alert">
+        <p id="alert"></p>
+        <button>حسناَ</button>
+    </div>
+    <div class="glass"></div>
+    <div class="social_forms">
+        <i class="fa-solid fa-share share"></i>
+        <div class="urlSocial">
+            <i class="fa-brands fa-facebook"></i>
+            <input type="text" data-type="facebook" placeholder="Facebook URL">
+        </div>
+        <div class="urlSocial">
+            <i class="fa-brands fa-twitter"></i>
+            <input type="text" data-type="twitter" placeholder="Twitter URL">
+        </div>
+        <div class="urlSocial">
+            <i class="fa-brands fa-instagram"></i>
+            <input type="text" data-type="instagram" placeholder="Instagram URL">
+        </div>
+        <div class="urlSocial">
+            <i class="fa-solid fa-phone"></i>
+            <input type="number" data-type="phone" placeholder="Phone Number">
+        </div>
+        <div>
+            <button id="cancelSocial">ألغاء</button>
+            <button id="addSocial">إضافة</button>
+        </div>
+    </div>
+    <!-- puubps -->
+
+    <div class="controller">
+        <div class="logo">
+            <img src="https://png.pngtree.com/template/20190316/ourmid/pngtree-books-logo-image_79143.jpg" alt="logo">
+        </div>
+        <div class="urls">
+            <a href="/publisher_settings">ملفك الشخصي</a>
+            <a class="active"  href="/publisher_settings/create_book">إنشاء كتاب</a>
+            <a href="/publisher_settings/update_book">تحديث كتاب</a>
+        </div>
+        <form action="/log_out" method="POST">
+            <input type="submit" value="تسجيل الخروج">
+        </form>
+    </div>
+    <button class="show_nav"><i class="fa-solid fa-bars"></i></button>
+    <div class="window">
+        <form action="" method="POST">
+            <div class="lable_input">
+                <label>اسم المؤلف</label>
+                <input type="text" name="name_of_the_writer">
+            </div>
+            <div class="lable_input">
+                <label>البريد الإلكتروني المؤلف</label>
+                <input type="email" name="email_of_the_writer">
+            </div>
+            <div class="lable_input">
+                <label>اسم الكتاب</label>
+                <input type="text" name="name_of_the_book">
+            </div>
+            <div class="lable_input">
+                <label>توع الكتاب</label>
+                <select type="text" name="type_of_the_book">
+                    <option>pepe</option>
+                    <option>popo</option>
+                    <option>meme</option>
+                </select>
+            </div>
+            <div class="lable_input numberDev">
+                <label>عدد طبعات الكتاب</label>
+                <input type="number" name="prints_of_the_book">
+            </div>
+            <div class="lable_input fileDiv">
+                <label for="img_book">رفع صورة للكتاب</label>
+                <div class="image">
+                    <img id="image_tester" style="display: none;" alt="book image">
+                </div>
+                <input id="img_book" name="image_of_the_book" type="file" style="display: none;">
+            </div>
+            <input type="submit" value="إضافة الكتاب">
+        </form>
+    </div>
+    
+    <script src="/all/all_settings.js"></script>
+    <script src="/publisher_settings/create_book/scripts/index.js"></script>
+</body>
+</html>

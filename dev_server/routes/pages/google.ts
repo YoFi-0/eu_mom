@@ -53,6 +53,7 @@ invoiceRoute.get('/ok', passport.authenticate('google', {failureFlash: '/not_ok'
     if(isUserFound){
         const user_from_db:DB_Users = isUserFound.get()
         req.session.isLogin = true
+        req.session.hero = true
         req.session.user_data = {
             name:reqUserData.displayName,
             email:reqUserData.email,

@@ -1,7 +1,3 @@
-const am_a_publisher_button = document.querySelector('#am_a_publisher_button') as HTMLButtonElement
-const type_userDiv = document.querySelector('.type-user') as HTMLDivElement
-const publisher_form = document.querySelector('.publisher-form') as HTMLFormElement
-const backButton = document.querySelector('#backButton') as HTMLButtonElement
 const uplodedFile = document.querySelector('#license_pdf') as HTMLInputElement
 const alertP = document.querySelector('#alert') as HTMLParagraphElement
 const alertDiv = document.querySelector('.alert') as HTMLDivElement
@@ -88,25 +84,15 @@ alertOkButton.onclick = async() =>{
 }
 cancelSocial.onclick = () =>{
     hideAlret()
-    social_forms.querySelectorAll('.urlSocial').forEach(elm => {
-    const input = elm.querySelector('input') as HTMLInputElement
-    input.value = ''
-        if(input!.dataset.type){
-            socialURLS[input!.dataset.type as socialURLSPropTypes] = ''
-        }
-    })
-    allSocialsTextEera.value = ''
 }
 social_forms.querySelectorAll('.urlSocial').forEach(elm => {
     const input = elm.querySelector('input') as HTMLInputElement
     console.log(input)
     if(input!.dataset.type){
-        input.onkeyup = () => {
-            socialURLS[input!.dataset.type as socialURLSPropTypes] = input.value
-            allSocialsTextEera.value = JSON.stringify(socialURLS)
-        }
+        socialURLS[input!.dataset.type as socialURLSPropTypes] = input.value
         input.onchange = () =>{
             socialURLS[input!.dataset.type as socialURLSPropTypes] = input.value
+            console.log(input.value)
             allSocialsTextEera.value = JSON.stringify(socialURLS)
             console.log(JSON.parse(allSocialsTextEera.value))
         }
@@ -114,42 +100,10 @@ social_forms.querySelectorAll('.urlSocial').forEach(elm => {
 })
 addSocial.onclick = () => {
     hideAlret()
+    console.log(allSocialsTextEera.value)
 }
 
 
-var isCanClick = true
-am_a_publisher_button.onclick = async() =>{
-    if(isCanClick){
-        isCanClick = false
-        type_userDiv.style.animation = "hide 1s 1"
-        await sleep(1000)
-        publisher_form.style.removeProperty('display')
-        publisher_form.style.animation = "show 1s 1"
-        type_userDiv.style.removeProperty('animation')
-        type_userDiv.style.display = 'none'
-        await sleep(1000)
-        isCanClick = true
-        publisher_form.style.removeProperty('animation')
-    }
-
-}
-
-
-backButton.onclick = async() =>{
-    if(isCanClick){
-        isCanClick = false
-        publisher_form.style.animation = "hide 1s 1"
-        await sleep(1000)
-        type_userDiv.style.removeProperty('display')
-        type_userDiv.style.animation = "show 1s 1"
-        publisher_form.style.removeProperty('animation') 
-        publisher_form.style.display = 'none' 
-        await sleep(1000)
-        isCanClick = true
-        type_userDiv.style.removeProperty('animation')
-    }
-
-}
 
 /*
 
@@ -166,12 +120,48 @@ document.querySelectorAll('.my_select').forEach(elm => {
    const searchInput = elm.querySelector('input[type=text]') as HTMLInputElement
    const finalInput = elm.querySelector('input[type=hidden]') as HTMLInputElement
    finalInput.value = ''
+   const database_values = finalInput.dataset.pre_value
+   const database_values_arr = database_values?.split('-')
    const attrsDiv =elm.querySelector('.attrrs')
    const codeElm = elm.querySelector('code') as HTMLElement
    var allData:string[] = []
    allOpstins.push(options)
    Array.from(options.children).forEach(elm => {
         const element = elm as HTMLParagraphElement
+        console.log(database_values_arr)
+        if(database_values_arr){
+            for(let value of database_values_arr){
+                if(element.dataset.value! == value){
+                    searchInput.value = ""
+                    const attrDiv =  document.createElement('div')
+                    attrDiv.classList.add('attrr')
+                    const attrName = document.createElement('p')
+                    attrName.textContent = element.textContent
+                    attrName.dataset.value = element.dataset.value!
+                    allData.push(element.dataset.value!)
+                    const x_icon = document.createElement('i')
+                    x_icon.classList.add('fa-solid')
+                    x_icon.classList.add('fa-x')
+                    attrDiv.appendChild(attrName)
+                    attrDiv.appendChild(x_icon)
+                    attrsDiv?.appendChild(attrDiv)
+                    finalInput.value = allData.join('-')
+                    codeElm.style.display = 'none'
+                }
+            }
+        }
+        Array.from(attrsDiv!.children).forEach(elm => {
+            elm.querySelector('i')!.onclick = () => {
+                allData = allData.filter(word => word != elm.querySelector('p')!.dataset.value)
+                finalInput.value = allData.join('-')
+                elm.remove()
+                if(attrsDiv!.children.length == 0){
+                    codeElm.style.display = 'block'
+                } else {
+                    codeElm.style.display = 'none'
+                }
+            }
+        })
         element.onclick = () => {
             var canAdd = true
             Array.from(attrsDiv!.children).forEach(elm => {

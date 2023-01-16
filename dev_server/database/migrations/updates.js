@@ -73,7 +73,6 @@ module.exports = {
         },
         image_url: {
           type: Sequelize.STRING(50),
-          allowNull: false,
         },
     });
     await queryInterface.createTable('books', {

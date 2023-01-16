@@ -6,7 +6,8 @@ import indexRoute from './routes/pages'
 import apiRoute from './routes/APIs/api'
 import { isProduction, port } from './config/functions'
 import GoogleRoute from './routes/pages/google'
-import complete_reg from './routes/pages/complete_reg'
+import publisher_settingsRoute from './routes/pages/publisher_settings'
+import complete_regRoute from './routes/pages/complete_reg'
 const app = express()
 import http from 'http'
 const server =  http.createServer(app)
@@ -32,7 +33,8 @@ app.use('/route', routeRoute)
 app.use('/', indexRoute)
 app.use('/api', apiRoute)
 app.use('/google', GoogleRoute)
-app.use('/complete_reg', complete_reg)
+app.use('/complete_reg', complete_regRoute)
+app.use('/publisher_settings', publisher_settingsRoute)
 
 
 server.listen(port, async()=>{

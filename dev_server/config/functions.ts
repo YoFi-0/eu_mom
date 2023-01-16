@@ -1,5 +1,6 @@
 import { randomBytes } from 'crypto'
 import { config } from 'dotenv'
+import { BodyFileType } from './types'
 config()
 
 export const serverFilePath = process.env.PRODUCTION == 'true' ? 'web_server' : 'dev_server'
@@ -15,6 +16,19 @@ export const  getOneDay = () =>{
 
 export const getRandomString = (len:number) =>{
     return randomBytes(len).toString('hex');
+}
+
+export const writeFileExpress = async(fileObj:BodyFileType, path:string):Promise<boolean> =>{
+   return await new Promise((r) => {
+        fileObj.mv(path, (err:any) => {
+            if(err){
+                console.log(err)
+                r(false)
+            } else {
+                r(true)
+            }
+        })
+    })
 }
 
 export const books_types = [

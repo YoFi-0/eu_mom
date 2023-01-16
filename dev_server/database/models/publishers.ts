@@ -48,7 +48,6 @@ const PublishersTable = Connection.define('publishers', {
       },
       image_url: {
         type: DataTypes.STRING(50),
-        allowNull: false,
       },
 }, {timestamps: false});
 

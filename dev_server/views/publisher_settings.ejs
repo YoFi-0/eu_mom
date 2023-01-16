@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>edit</title>
+    <link rel="stylesheet" href="/all/css/all.min.css">
+    <link rel="stylesheet" href="/all/settings_all.css">
+    <link rel="stylesheet" href="/publisher_settings/styles/index.css">
+</head>
+<body>
+
+    <!-- puubps -->
+    <div class="alert">
+        <p id="alert"></p>
+        <button>حسناَ</button>
+    </div>
+    <div class="glass"></div>
+    <div class="social_forms">
+        <% if(publisher_social){ %>
+            <i class="fa-solid fa-share share"></i>
+            <div class="urlSocial">
+                <i class="fa-brands fa-facebook"></i>
+                <input value="<%=publisher_social.facebook%>" type="text" data-type="facebook" placeholder="Facebook URL">
+            </div>
+            <div class="urlSocial">
+                <i class="fa-brands fa-twitter"></i>
+                <input type="text" value="<%=publisher_social.twitter%>" data-type="twitter" placeholder="Twitter URL">
+            </div>
+            <div class="urlSocial">
+                <i class="fa-brands fa-instagram"></i>
+                <input type="text" value="<%=publisher_social.instagram%>" data-type="instagram" placeholder="Instagram URL">
+            </div>
+            <div class="urlSocial">
+                <i class="fa-solid fa-phone"></i>
+                <input type="text" value="<%=publisher_social.phone%>" data-type="phone" placeholder="Phone Number">
+            </div>
+            <div>
+                <button id="cancelSocial">ألغاء</button>
+                <button id="addSocial">إضافة</button>
+            </div>
+        <%} else {%>
+            <i class="fa-solid fa-share share"></i>
+            <div class="urlSocial">
+                <i class="fa-brands fa-facebook"></i>
+                <input type="text" data-type="facebook" placeholder="Facebook URL">
+            </div>
+            <div class="urlSocial">
+                <i class="fa-brands fa-twitter"></i>
+                <input type="text" data-type="twitter" placeholder="Twitter URL">
+            </div>
+            <div class="urlSocial">
+                <i class="fa-brands fa-instagram"></i>
+                <input type="text" data-type="instagram" placeholder="Instagram URL">
+            </div>
+            <div class="urlSocial">
+                <i class="fa-solid fa-phone"></i>
+                <input type="text" data-type="phone" placeholder="Phone Number">
+            </div>
+            <div>
+                <button id="cancelSocial">ألغاء</button>
+                <button id="addSocial">إضافة</button>
+            </div>
+        <%}%>
+
+    </div>
+    <!-- puubps -->
+
+    <div class="controller">
+        <div class="logo">
+            <img src="https://png.pngtree.com/template/20190316/ourmid/pngtree-books-logo-image_79143.jpg" alt="logo">
+        </div>
+        <div class="urls">
+            <a class="active" href="/publisher_settings">ملفك الشخصي</a>
+            <a href="/publisher_settings/create_book">إنشاء كتاب</a>
+            <a href="/publisher_settings/update_book">تحديث كتاب</a>
+        </div>
+        <form action="/log_out" method="POST">
+            <input type="submit" value="تسجيل الخروج">
+        </form>
+    </div>
+    <button class="show_nav"><i class="fa-solid fa-bars"></i></button>
+    <div class="window">
+        <form class="publisher-form" action="" enctype="multipart/form-data" method="POST">
+            <input type="hidden" name="publisher_id" value="<%=publisher_id%>">
+            <div class="first">
+                <label>إسم الدار</label>
+                <input name="publisher_name" type="text" value="<%=publisher_name%>">
+                <label for="license_img">البلد</label>
+                <input type="text" value="<%=publisher_location_country%>" name="country">
+                <label for="license_img">المدينة</label>
+                <input type="text" name="city" value= "<%=publisher_location_city%>">
+            </div>
+            <div class="license">
+                <div class="file">
+                    <label for="license_pdf" class="file_uplode">ملف الرخصة PDF</label>
+                    <p id="file_name" style="display: none;"></p>
+                    <input id="license_pdf" style="display: none;" type="file" name="license_pdf">
+                </div>
+                <div class="select">
+                    <label>نوع الرخصة</label>
+                    <select name="publisher_type" value="<%=publisher_license_type%>">
+                        <%if(publisher_license_type == "locally"){%>
+                            <option value="locally">محلية</option>
+                            <option value="internationally">عالمية</option>
+                        <%} else {%>
+                            <option value="internationally">عالمية</option>
+                            <option value="locally">محلية</option>
+                        <%}%>
+                    </select>
+                </div>
+            </div>
+            <div class="publisher_image">
+                <%if(publisher_img){%>
+                <div class="img" style="background: #1c2869;">
+                <%} else {%>
+                <div class="img">
+                <%}%>
+                    <%if(publisher_img){%>
+                        <img id="test_image" src="<%=publisher_img%>"/>
+                    <%} else {%>
+                        <img style="display: none;" id="test_image"/>
+                    <%}%>
+                </div>
+                <label for="image" class="file_uplode">صورة ملف الدار PNG</label>
+                <input id="image" style="display: none;" type="file" name="publisher_image">
+            </div>
+            <div class="my_select">
+                <input type="hidden" name="books_langs" data-pre_value="<%=db_langs%>">
+                <label>لغات الكتب</label>
+                <code>لا يوجد إختيارات بعد</code>
+                <div class="attrrs"></div>
+                <input  data-id="1" type="text" id="searsh">
+                <div data-id="1" class="options" >
+                    <% for(let lang of books_langs){ %>
+                        <p data-value="<%=lang.value%>"><%=lang.ar_name%></p>
+                    <%}%>
+                </div>
+            </div>
+            
+            <div class="my_select">
+                <input type="hidden" name="books_types" data-pre_value="<%=db_types%>">
+                <label>انواع الكتب</label>
+                <code>لا يوجد إختيارات بعد</code>
+                <div class="attrrs"></div>
+                <input data-id="2" class="selectInputSearch" type="text" id="searsh">
+                <div data-id="2" class="options">
+                    <% for(let book_type of books_types){ %>
+                        <p data-value="<%=book_type.value%>"><%=book_type.ar_name%></p>
+                    <%}%>
+                </div>
+            </div>
+            <div class="social">
+                <button type="button" id="social">روابط التواصل</button>
+                <textarea id="allSocialsTextEera" style="display: none;" name="social"><%=JSON.stringify(publisher_social)%></textarea>
+            </div>
+            <div class="inputButtons">
+                <input id="done" type="submit" value="تحديث البيانات">
+            </div>
+        </form>
+    </div>
+    
+    <script src="/all/all_settings.js"></script>
+    <script src="/publisher_settings/scripts/index.js"></script>
+</body>
+</html>

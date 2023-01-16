@@ -1,0 +1,101 @@
+.window {
+  width: 80%;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  height: 100%;
+}
+.window form {
+  padding: max(1.5vw, 1.5em);
+  border-radius: max(1vw, 1em);
+  background: #EEE;
+  box-shadow: max(-0.5vw, -0.5em) max(0.5vw, 0.5em) max(0.5vw, 0.5em) max(0.1vw, 0.1em) rgba(0, 0, 0, 0.2666666667);
+}
+.window form input {
+  padding: max(0.2vw, 0.2em) max(1vw, 1em);
+  border: solid #000 max(0.1vw, 0.1em);
+}
+.window form label, .window form select, .window form input {
+  font-size: max(1vw, 1em);
+}
+.window form input {
+  font-size: max(0.8vw, 0.8em);
+}
+.window form input[type=number] {
+  width: max(5vw, 5em);
+  text-align: center;
+}
+.window form .lable_input {
+  margin: max(0.7vw, 0.7em) 0;
+  display: flex;
+  gap: max(1vw, 1em);
+  justify-content: space-between;
+}
+.window form .numberDev {
+  justify-content: center;
+}
+.window form .fileDiv {
+  padding-top: max(1vw, 1em);
+  align-items: center;
+  flex-direction: column;
+}
+.window form .fileDiv label {
+  background: #9c9c9c;
+  color: #FFF;
+  padding: 0 max(0.7vw, 0.7em);
+  cursor: pointer;
+  transition: 0.1s;
+}
+.window form .fileDiv label:hover {
+  background: #1c2869;
+}
+.window form .fileDiv .image {
+  width: max(7vw, 7em);
+  height: max(10vw, 10em);
+  background: #9c9c9c;
+  padding: max(0.2vw, 0.2em);
+  border-radius: max(0.5vw, 0.5em);
+  border: dashed max(0.11vw, 0.11em) #000;
+  transition: 0.3s;
+}
+.window form .fileDiv .image img {
+  border-radius: max(0.5vw, 0.5em);
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  transition: 0.3s;
+}
+.window form input[type=submit] {
+  background: #9c9c9c;
+  color: #FFF;
+  padding: 0 max(0.7vw, 0.7em);
+  cursor: pointer;
+  transition: 0.1s;
+  border: none;
+}
+.window form input[type=submit]:hover {
+  background: #1c2869;
+}
+@media (max-width: 650px) {
+  .window {
+    width: 100%;
+    padding-bottom: max(5vw, 5em);
+    padding-top: max(5vw, 5em);
+  }
+  .window form {
+    width: 100%;
+  }
+  .window form .lable_input {
+    align-items: center;
+    flex-direction: column;
+  }
+  .window form .lable_input label {
+    font-size: max(0.8vw, 0.8em);
+  }
+  .window form input[type=text], .window form input[type=number], .window form input[type=email] {
+    width: 100%;
+  }
+}/*# sourceMappingURL=index.css.map */
