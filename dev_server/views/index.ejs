@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+</head>
+<body>
+    <% if(isLogin){ %>
+        <p>username: <span><%=username%></span></p>
+        <p>email: <span><%=email%></span></p>
+        <p>type <span><%=user_type%></span></p>
+        <img src=<%=picture%> alt="user image">
+    <%} else {%>
+        <a href="/google">login</a>
+    <%}%>
+    <h1>yofi server</h1>
+    <% if(isLogin){ %>
+        <form action="/log_out" method="POST">
+            <input type="submit" value="log out">
+        </form>
+    <%}%>
+</body>
+</html>

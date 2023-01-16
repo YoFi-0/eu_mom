@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>complete restoration</title>
+    <link rel="stylesheet" href="/all/css/all.min.css">
+    <link rel="stylesheet" href="/complete_reg/styles/index.css">
+</head>
+<body>
+    <div class="alert">
+        <p id="alert"><%=badMsg%></p>
+        <button>حسناَ</button>
+    </div>
+    <div class="glass"></div>
+    <div class="social_forms">
+        <i class="fa-solid fa-share share"></i>
+        <div class="urlSocial">
+            <i class="fa-brands fa-facebook"></i>
+            <input type="text" data-type="facebook" placeholder="Facebook URL">
+        </div>
+        <div class="urlSocial">
+            <i class="fa-brands fa-twitter"></i>
+            <input type="text" data-type="twitter" placeholder="Twitter URL">
+        </div>
+        <div class="urlSocial">
+            <i class="fa-brands fa-instagram"></i>
+            <input type="text" data-type="instagram" placeholder="Instagram URL">
+        </div>
+        <div class="urlSocial">
+            <i class="fa-solid fa-phone"></i>
+            <input type="number" data-type="phone" placeholder="Phone Number">
+        </div>
+        <div>
+            <button id="cancelSocial">ألغاء</button>
+            <button id="addSocial">إضافة</button>
+        </div>
+    </div>
+    <form class="publisher-form" style="display: none;" action="/complete_reg/publisher" enctype="multipart/form-data" method="POST">
+            <div class="first">
+                <label>إسم الدار</label>
+                <input name="publisher_name" type="text">
+                <label for="license_img">البلد</label>
+                <input type="text" name="country">
+                <label for="license_img">المدينة</label>
+                <input type="text" name="city">
+            </div>
+            <div class="license">
+                <div class="file">
+                    <label for="license_pdf" class="file_uplode">ملف الرخصة PDF</label>
+                    <p id="file_name" style="display: none;"></p>
+                    <input id="license_pdf" style="display: none;" type="file" name="license_pdf">
+                </div>
+                <div class="select">
+                    <label>نوع الرخصة</label>
+                    <select name="publisher_type">
+                        <option value="locally">محلية</option>
+                        <option value="internationally">عالمية</option>
+                    </select>
+                </div>
+            </div>
+            <div class="publisher_image">
+                <div class="img">
+                    <img style="display: none;" id="test_image" style="display: none;">
+                </div>
+                <label for="image" class="file_uplode">صورة ملف الدار PNG</label>
+                <input id="image" style="display: none;" type="file" name="publisher_image">
+            </div>
+            <div class="my_select">
+                 <input type="hidden" name="books_langs">
+                <label>لغات الكتب</label>
+                <code>لا يوجد إختيارات بعد</code>
+                <div class="attrrs"></div>
+                <input  data-id="1" type="text" id="searsh">
+                <div data-id="1" class="options" >
+                    <% for(let lang of books_langs){ %>
+                        <p data-value=<%=lang.value%>><%=lang.ar_name%></p>
+                    <%}%>
+                </div>
+            </div>
+            
+            <div class="my_select">
+                <input type="hidden" name="books_types">
+                <label>انواع الكتب</label>
+                <code>لا يوجد إختيارات بعد</code>
+                <div class="attrrs"></div>
+                <input data-id="2" class="selectInputSearch" type="text" id="searsh">
+                <div data-id="2" class="options">
+                    <% for(let book_type of books_types){ %>
+                        <p data-value=<%=book_type.value%>><%=book_type.ar_name%></p>
+                    <%}%>
+                </div>
+            </div>
+            <div class="social">
+                <button type="button" id="social">روابط التواصل</button>
+                <textarea id="allSocialsTextEera" style="display: none;" name="social"></textarea>
+            </div>
+            <div class="inputButtons">
+                <input id="done" type="submit" value="إكمال التسجيل">
+                <button id="backButton" type="button">الرجوع</button>
+            </div>
+    </form>
+
+    <div class="type-user">
+        <img src=<%=photo%> alt="user image">
+        <p><span>مراحباً</span> <%=username%></p>
+        <p>هل انت دار نشر ام مستخدم عادي</p>
+        <div class="buttons">
+            <button id="am_a_publisher_button">انا دار نشر</button>
+            <form action="/complete_reg/user" method="POST">
+                <input type="submit" value="انا مستخدم عادي">
+            </form>
+        </div>
+    </div>
+    <script src="/complete_reg/scripts/index.js"></script>
+</body>
+</html>
