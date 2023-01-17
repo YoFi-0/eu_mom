@@ -12,14 +12,13 @@ const BooksTable = Connection.define('books', {
       unique:true,
       type: DataTypes.INTEGER
     },
-    publisher_id:{
+    user_id:{
       allowNull: false,
       type: DataTypes.INTEGER,
       references: {
-          model: 'publishers',
+          model: 'users',
           key: 'id'
       },
-      unique: true,
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
     },

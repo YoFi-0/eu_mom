@@ -57,7 +57,7 @@
     </div>
     <button class="show_nav"><i class="fa-solid fa-bars"></i></button>
     <div class="window">
-        <form action="" method="POST">
+        <form action="" method="POST" enctype="multipart/form-data">
             <div class="lable_input">
                 <label>اسم المؤلف</label>
                 <input type="text" name="name_of_the_writer">
@@ -73,9 +73,9 @@
             <div class="lable_input">
                 <label>توع الكتاب</label>
                 <select type="text" name="type_of_the_book">
-                    <option>pepe</option>
-                    <option>popo</option>
-                    <option>meme</option>
+                    <%books_types.forEach(type => {%>
+                        <option value="<%=type.value%>"><%=type.ar_name%></option>
+                    <%})%>
                 </select>
             </div>
             <div class="lable_input numberDev">

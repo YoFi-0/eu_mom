@@ -83,14 +83,13 @@ module.exports = {
           unique:true,
           type: Sequelize.INTEGER
         },
-        publisher_id:{
+        user_id:{
           allowNull: false,
           type: Sequelize.INTEGER,
           references: {
-              model: 'publishers',
+              model: 'users',
               key: 'id'
           },
-          unique: true,
           onUpdate: 'CASCADE',
           onDelete: 'CASCADE',
         },

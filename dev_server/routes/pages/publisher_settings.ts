@@ -1,9 +1,10 @@
 import { Router } from 'express'
 import { heroSesstion, isLogin, isPublisher } from '../../middlewares/middlewares'
 import PublishersTable from '../../database/models/publishers'
-import { DB_Publishers, BodyFileType, SocialObj_from_DB_Publishers } from '../../config/types'
+import { DB_Publishers, BodyFileType, SocialObj_from_DB_Publishers, DB_Books } from '../../config/types'
 import { books_langs, books_types, writeFileExpress } from '../../config/functions'
 import path from 'path'
+import BooksTable from '../../database/models/books'
 const publisher_settings = Router()
 
 publisher_settings.use(isLogin)
@@ -117,19 +118,19 @@ publisher_settings.post('/', async(req, res) => {
         }
 
         const publisher:DB_Publishers = getPublisher.get()
-        var finalSocialObj:SocialObj_from_DB_Publishers | null = null
-        if(social){
-            var obgSocial:SocialObj_from_DB_Publishers
-            try{
-                obgSocial = JSON.parse(social)
-                finalSocialObj = obgSocial
-            } catch(err){
-                console.log('connot decod json files => /publisher_settings (post)') 
-                res.status(500)
-                res.send('server error')
-                return
-            }
-        }
+        // var finalSocialObj:SocialObj_from_DB_Publishers | null = null
+        // if(social){
+        //     var obgSocial:SocialObj_from_DB_Publishers
+        //     try{
+        //         obgSocial = JSON.parse(social)
+        //         finalSocialObj = obgSocial
+        //     } catch(err){
+        //         console.log('connot decod json files => /publisher_settings (post)') 
+        //         res.status(500)
+        //         res.send('server error')
+        //         return
+        //     }
+        // }
         await PublishersTable.update({
             name: publisher_name ? publisher_name : publisher.name,
             books_langs: books_langs ? books_langs : publisher.books_langs,
@@ -154,8 +155,106 @@ publisher_settings.post('/', async(req, res) => {
     console.log('done')
     res.redirect('/publisher_settings')
 })
-publisher_settings.get('/create_book', (req, res) => {
-    res.render('publisher_settings_create_book')
+publisher_settings.get('/create_book', async(req, res) => {
+    var getPublisher
+    try{
+        getPublisher = await PublishersTable.findOne({
+            where:{
+                user_id:req.session.user_data!.id
+            } as DB_Publishers
+        })
+    } catch(err){
+        console.log(err)
+        res.status(500)
+        res.send('server error')
+        return
+    }
+    if(!getPublisher){
+        req.session.destroy(() => {
+            return null
+        })
+        res.redirect('/')
+        return
+    }
+    const publisher:DB_Publishers = getPublisher.get()
+    const bookTypes = publisher.books_types.split('-')
+    var finalArray = []
+    for(let j = 0; j < books_types.length; j++){
+        for(let i = 0; i < bookTypes.length; i++){
+            if(books_types[j].value == bookTypes[i]){
+                finalArray.push(books_types[j])
+                break;
+            }
+        }
+    }
+    res.render('publisher_settings_create_book', {
+        books_types:finalArray
+    })
+})
+publisher_settings.post('/create_book', async(req, res) => {
+    type reqBody = {
+        name_of_the_writer:string
+        email_of_the_writer:string
+        name_of_the_book:string
+        prints_of_the_book:string
+        type_of_the_book:string
+    };
+    if(!req.files || !req.files!.image_of_the_book){
+        res.send('missing filds')
+        return
+    }
+
+    
+    const{email_of_the_writer, name_of_the_book, name_of_the_writer, prints_of_the_book, type_of_the_book} =  req.body as reqBody
+    if(!email_of_the_writer || !name_of_the_book || !name_of_the_writer || !prints_of_the_book || !type_of_the_book){
+        res.send('missing filds')
+        return
+    }
+    if(isNaN(Number(prints_of_the_book))){
+        res.send('عدد طبعات الكتاب يجب ان تكون رقماً')
+        return
+    }
+    try{
+        var createBook = await BooksTable.create({
+            book_image_url:`not_yet`,
+            book_name:name_of_the_book,
+            book_prints:Number(prints_of_the_book),
+            book_type:type_of_the_book,
+            user_id:req.session.user_data!.id,
+            writer_email:email_of_the_writer,
+            writer_name:name_of_the_writer,
+        } as DB_Books, {
+            logging:false
+        })
+        createBook  = await createBook.save() 
+        const DB_Book:DB_Books = createBook.get()
+        const image_of_the_book =  req.files.image_of_the_book as BodyFileType
+        const files_path =  path.join(__dirname, '../../public/publisher_files')
+        const isImage_of_the_bookCreated = writeFileExpress(image_of_the_book, path.join(files_path, `books/${DB_Book.id}-${req.session.user_data!.id}_book_img.png`))
+        if(!isImage_of_the_bookCreated){
+            await BooksTable.destroy({
+                where:{
+                    user_id:req.session.user_data!.id,
+                    id:DB_Book.id
+                } as DB_Books,
+                logging:false
+            })
+            throw Error("connot create book image")
+        }
+        await BooksTable.update({
+            book_image_url:`/publishers_data/books/${DB_Book.id}-${req.session.user_data!.id}_book_img.png`
+        }as DB_Books, {where:{
+            user_id:req.session.user_data!.id,
+            id:DB_Book.id
+        } as DB_Books, logging:false})
+    } catch(err){
+        console.log(err)
+        res.status(500)
+        res.send('server error')
+        return
+    }
+    console.log('book created')
+    res.redirect('/publisher_settings/create_book')
 })
 
 export default publisher_settings
