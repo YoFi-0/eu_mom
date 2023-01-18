@@ -16,6 +16,12 @@
         <p id="alert"></p>
         <button>حسناَ</button>
     </div>
+    <div class="delete_user">
+        <p>هل انت متأكد من حذف حسابك</p>
+        <form action="/delete_acount" method="POST">
+            <button type="submit">نعم</button>
+        </form>
+    </div>
     <div class="glass"></div>
     <div class="social_forms">
         <% if(publisher_social){ %>
@@ -156,6 +162,7 @@
                 <textarea id="allSocialsTextEera" style="display: none;" name="social"><%=JSON.stringify(publisher_social)%></textarea>
             </div>
             <div class="inputButtons">
+                <button type="button" id="delete_acount">حذف الحساب</button>
                 <input id="done" type="submit" value="تحديث البيانات">
             </div>
         </form>

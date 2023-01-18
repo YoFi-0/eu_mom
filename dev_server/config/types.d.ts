@@ -45,7 +45,7 @@ export type SocialObj_from_DB_Publishers = {
 
 export type DB_Books = {
     id:number
-    user_id:number
+    user_id?:number
     writer_name:string
     writer_email:string
     book_name:string

@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/all/css/all.min.css">
     <link rel="stylesheet" href="/all/settings_all.css">
     <link rel="stylesheet" href="/publisher_settings/create_book/styles/index.css">
+    <link rel="stylesheet" href="/publisher_settings/update_book/styles/index.css">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -15,6 +17,13 @@
     <div class="alert">
         <p id="alert"></p>
         <button>حسناَ</button>
+    </div>
+    <div class="delete_book">
+        <p>هل انت متأكد من حذف الكتاب</p>
+        <form action="/publisher_settings/delete_book" method="POST">
+            <input type="hidden" id="book_input_delete" name="book_id">
+            <input type="submit" value="نعم">
+        </form>
     </div>
     <div class="glass"></div>
     <!-- puubps -->
@@ -25,8 +34,8 @@
         </div>
         <div class="urls">
             <a href="/publisher_settings">ملفك الشخصي</a>
-            <a class="active"  href="/publisher_settings/create_book">إنشاء كتاب</a>
-            <a href="/publisher_settings/update_book">تحديث كتاب</a>
+            <a href="/publisher_settings/create_book">إنشاء كتاب</a>
+            <a class="active" href="/publisher_settings/update_book">تحديث كتاب</a>
         </div>
         <form action="/log_out" method="POST">
             <input type="submit" value="تسجيل الخروج">
@@ -34,22 +43,23 @@
     </div>
     <button class="show_nav"><i class="fa-solid fa-bars"></i></button>
     <div class="window">
-        <form action="" method="POST" enctype="multipart/form-data">
+        <form action="" id="update_form" method="POST" style="display: none;" enctype="multipart/form-data">
+            <input type="hidden" name="id_of_the_book" id="book_id">
             <div class="lable_input">
                 <label>اسم المؤلف</label>
-                <input type="text" name="name_of_the_writer">
+                <input id="writer_name" type="text" name="name_of_the_writer">
             </div>
             <div class="lable_input">
                 <label>البريد الإلكتروني المؤلف</label>
-                <input type="email" name="email_of_the_writer">
+                <input id="writer_email" type="email" name="email_of_the_writer">
             </div>
             <div class="lable_input">
                 <label>اسم الكتاب</label>
-                <input type="text" name="name_of_the_book">
+                <input id="book_name" type="text" name="name_of_the_book">
             </div>
             <div class="lable_input">
                 <label>توع الكتاب</label>
-                <select type="text" name="type_of_the_book">
+                <select id="book_type" type="text" name="type_of_the_book">
                     <%books_types.forEach(type => {%>
                         <option value="<%=type.value%>"><%=type.ar_name%></option>
                     <%})%>
@@ -57,7 +67,7 @@
             </div>
             <div class="lable_input numberDev">
                 <label>عدد طبعات الكتاب</label>
-                <input type="number" name="prints_of_the_book">
+                <input id="book_prints" type="number" name="prints_of_the_book">
             </div>
             <div class="lable_input fileDiv">
                 <label for="img_book">رفع صورة للكتاب</label>
@@ -66,11 +76,23 @@
                 </div>
                 <input id="img_book" name="image_of_the_book" type="file" style="display: none;">
             </div>
-            <input type="submit" value="إضافة الكتاب">
+            <div>
+                <input type="submit" value="تعديل الكتاب">
+                <input type="button" id="back_to_books" value="الرجوع">
+                <input type="button" id="delete_book" value="ْحذف الكتاب">
+            </div>
         </form>
+        <div class="all_books">
+            <!-- <div data-book_id="1" data-writer_name="محمد عيسى"  data-writer_email="lala@lala.com" data-prints="3"  data-book_type="lala" class="book">
+                <img src="https://www.aljazeera.net/wp-content/uploads/2022/04/%D8%B5%D9%88%D8%B1%D8%A9-%D8%B1%D8%A6%D9%8A%D8%B3%D9%8A%D8%A9-%D9%85%D9%8A%D8%AF%D8%A7%D9%86-60.png?resize=1200%2C675" alt="book_name">
+                <p>كتاب كيف تصنع الزعتر بالجببة</p>
+            </div> -->
+        </div>
     </div>
+
     
     <script src="/all/all_settings.js"></script>
     <script src="/publisher_settings/create_book/scripts/index.js"></script>
+    <script src="/publisher_settings/update_book/scripts/index.js"></script>
 </body>
 </html>

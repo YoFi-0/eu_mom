@@ -11,6 +11,8 @@ const allSocialsTextEera = document.querySelector('#allSocialsTextEera') as HTML
 const done = document.querySelector('#done') as HTMLButtonElement
 const test_image = document.querySelector('#test_image') as HTMLImageElement
 const img_input = document.querySelector('#image') as HTMLInputElement
+const delete_user_form = document.querySelector('.delete_user') as HTMLDivElement
+const delete_acount_boutton = document.querySelector('#delete_acount') as HTMLButtonElement
 
 img_input.onchange = async() => {
     test_image.style.opacity = '0'
@@ -50,11 +52,21 @@ const hideAlret = async() => {
     galss.style.opacity = '0'
     alertDiv.style.scale = '0'
     social_forms.style.scale = '0'
+    delete_user_form.style.scale = '0'
     await sleep(500)
     alertDiv.style.display = 'none'
     alertP.textContent = ''
     galss.style.display = 'none'
     social_forms.style.display = 'none'
+    delete_user_form.style.display = 'none'
+}
+
+delete_acount_boutton.onclick = async() =>{
+    galss.style.display = 'block'
+    delete_user_form.style.display = 'block'
+    await sleep(500)
+    delete_user_form.style.scale = '1'
+    galss.style.opacity = '1'
 }
 
 const showAlert = async(msg:string) => {
