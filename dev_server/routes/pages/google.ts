@@ -2,8 +2,9 @@ import {Router} from 'express'
 import passport from 'passport'
 import googleAuth2 from 'passport-google-oauth2'
 import {config} from 'dotenv'
-import {DB_Users, GoogleUser } from '../../config/types'
+import {DB_Publishers, DB_Users, GoogleUser } from '../../config/types'
 import UsersTable from '../../database/models/users'
+import PublishersTable from '../../database/models/publishers'
 const invoiceRoute = Router()
 config()
 const GoogleStartgy = googleAuth2.Strategy
@@ -52,6 +53,23 @@ invoiceRoute.get('/ok', passport.authenticate('google', {failureFlash: '/not_ok'
     }
     if(isUserFound){
         const user_from_db:DB_Users = isUserFound.get()
+        var get_user_id
+        if(user_from_db.type == 'publisher'){
+            try{
+                get_user_id = await PublishersTable.findOne({
+                    attributes:['id'],
+                    where:{
+                        user_id:user_from_db.id
+                    }
+                })
+            } catch(err){
+
+            }
+        }
+        if(get_user_id){
+            const finalBup:DB_Publishers = get_user_id.get()
+            req.session.pub_id = finalBup.id
+        }
         req.session.isLogin = true
         req.session.hero = true
         req.session.user_data = {

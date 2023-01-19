@@ -10,41 +10,22 @@ import FileStore from 'session-file-store'
 import {getOneDay, serverFilePath, isProduction} from '../config/functions'
 
 const useSesstion = () =>{
-    if(isProduction){
-        const sesstionStore = FileStore(session)
-        return session({
-            secret: process.env.SESTION_SECRIT!,
-            resave: false,
-            name: "YOFI_SESSTION",
-            saveUninitialized: true,
-            cookie: { 
-                httpOnly: true,
-                maxAge: getOneDay(),
-                secure: true
-            },
-            store: new sesstionStore({
-                reapInterval: 60 * 60,
-                path: `./${serverFilePath}/sesstionstore`
-            })
+    const RedisStore = connectRedis(session)
+    const RedisClint = new Redis()
+    return session({
+        secret: process.env.SESTION_SECRIT!,
+        resave: false,
+        name: "YOFI_SESSTION",
+        saveUninitialized: true,
+        cookie: { 
+            httpOnly: true,
+            maxAge: getOneDay()
+        },
+        store: new RedisStore({
+            client: RedisClint,
+            disableTouch: true,
         })
-    } else {
-        const RedisStore = connectRedis(session)
-        const RedisClint = new Redis()
-        return session({
-            secret: process.env.SESTION_SECRIT!,
-            resave: false,
-            name: "YOFI_SESSTION",
-            saveUninitialized: true,
-            cookie: { 
-                httpOnly: true,
-                maxAge: getOneDay()
-            },
-            store: new RedisStore({
-                client: RedisClint,
-                disableTouch: true,
-            })
-        })
-    }
+    })
 }
 export const finalSesstion = useSesstion()
 export const wrapSesstion = (express_middleWare:any) => (socket:any, next:any)  => express_middleWare(socket.request, {},next)

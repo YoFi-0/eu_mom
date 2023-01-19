@@ -61,7 +61,7 @@ users.get('/:pub_id', async(req, res) => {
     res.render('show_publidher', {
         pub_data:finaleUser,
         fainalStar:fainalStar.stars,
-        image_path_style:`/images/starts/${fainalStar.stars}_.svg`,
+        image_path_style: fainalStar.stars ? `/images/starts/${fainalStar.stars}_.svg` : `/images/starts/0_.svg`,
         books_types:books_types,
         books_langs:books_langs,
         arrayNum5:arrayNum5,

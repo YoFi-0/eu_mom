@@ -59,6 +59,7 @@ complete_reg.post('/user', async(req, res) => {
         return res.send('server error')
     }
     const user:DB_Users = getUser.get()
+    
     req.session.isLogin = true
     req.session.user_data = {
         name:name,
@@ -188,7 +189,8 @@ const publisherPost = async(req:Request, res:Response, {
                 return res.send('server error')
             }
         }
-        await PublishersTable.create({
+        var pub
+        pub = await PublishersTable.create({
             books_langs:form.books_langs,
             books_types:form.books_types,
             image_url:publisher_image ? `/publisher_files/${user.id}_img.png` : null,
@@ -198,6 +200,9 @@ const publisherPost = async(req:Request, res:Response, {
             social:isHaveSocial ? form.social : null,
             user_id:user.id
         } as DB_Publishers , {logging:false})
+        pub = await pub.save()
+        pub = pub.get()
+        req.session.pub_id = pub.id
     }catch(err){
         console.log('err => /complete_reg/publisher (post)') 
         console.log(err)

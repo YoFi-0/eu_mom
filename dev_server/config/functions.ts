@@ -35,59 +35,59 @@ export const books_types = [
     {
         value:'lala',
         en_name:"lala_en",
-        ar_name:"مشمش"
+        ar_name:"خواطر"
     },
     {
         value:'lele',
         en_name:"lele_en",
-        ar_name:"لي لي"
+        ar_name:"أشعار"
     },
     {
         value:'bobo',
         en_name:"bobo_en",
-        ar_name:"بوبو"
+        ar_name:"روايات"
     },
     {
         value:'coco',
         en_name:"coco_an",
-        ar_name:"كو كو"
+        ar_name:"فنتازيا"
     },
     {
         value:'dodo',
         en_name:"dodo_en",
-        ar_name:"دو دو"
+        ar_name:"مجموعة مقالات"
     },
     {
         value:'mama',
         en_name:"mama_en",
-        ar_name:"ماما"
+        ar_name:"تنمية بشرية"
     },
     {
         value:'tete',
         en_name:"tete_en",
-        ar_name:"تيتي"
+        ar_name:"قصص قصيرة"
     },
     {
         value:'ququ',
         en_name:"ququ_en",
-        ar_name:"كيو كيو"
+        ar_name:"قصص اطفال "
     },
     {
         value:'zam_zam',
         en_name:"zam zam",
-        ar_name:"زام زيم"
+        ar_name:"فلسفة"
     },
     {
         value:'l7l7',
         en_name:"l7l7_en",
-        ar_name:"لحلح"
+        ar_name:"دينية"
     },
 ]
 export const books_langs = [
     {
         value:'ar',
         en_name:"arabic",
-        ar_name:"مشمش"
+        ar_name:"عربي"
     },
     {
         value:'en',

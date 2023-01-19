@@ -39,7 +39,7 @@
                             <div class="card">
                                 <img src="/src/img/Frame 7 1.svg" alt="">
                                 <div class="taitel">
-                                    <h1>دار محمد ناصر</h1>
+                                    <h1>اسم الدار</h1>
                                 </div>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                 <img class="log" src="/src/img/Frame 7 1.svg" alt="">
             </div>
             <div class="text">
-                <h1>سُمو</h1>
+                <h1>سُموّ</h1>
                 <p>فرصة لكل <span>كاتب</span> جديد
                     سُمو <span>للأمام</span> نرتقي</p>
             </div>
@@ -106,12 +106,10 @@
                 <h2>نبذة عنا</h2>
             </div>
             <div class="allTitels">
-                <p class="text1"> قوة السلسلة تقاس بقوة أضعف حلقاتها. قد يَجد الجبان 36 حلاً لمشكلته، ولكنه لا يعجبه
-                    منها سوى حل واحد وهو الفرار. ليس شجاعاً ذلك الكلب الذي ينبح على جثة الأسد. يقول أحد العارفين:
-                    مصيبتان لم يُسمع بمثلهما تصيبان العبد </p>
-                <p class="text2"> قوة السلسلة تقاس بقوة أضعف حلقاتها. قد يَجد الجبان 36 حلاً لمشكلته، ولكنه لا يعجبه
-                    منها سوى حل واحد وهو الفرار. ليس شجاعاً ذلك الكلب الذي ينبح على جثة الأسد. يقول أحد العارفين:
-                    مصيبتان لم يُسمع بمثلهما تصيبان العبد </p>
+                <p class="text1">لترتقي أمة إقرأ عليك بدعم الدار التي بدورها تمنح الخلود لذالك الوميض القادم من  كتاب،
+
+                </p>
+                <p class="text2"> ليس على الكاتب أن يتحدى ذكاء القارئ، عليه أن يتحدى خياله</p>
             </div>
         </div>
     </div>
@@ -120,42 +118,38 @@
     <!-- Start library -->
     <div class="library" id="libss">
         <div class="container">
-
             <div class="allbox">
 
                 <%for(let user of finalArray){%>
-                    <div class="coco">
-                        <div class="user">
-                            <%if(user.user_image){%>
-                                <img class="logo-user" src="<%=user.user_image%>"  alt="">
-                            <%} else {%>
-                                <img class="logo-user" src="/src/img/Frame 7 1.svg" alt="">
-                            <%}%>
-                           
-                            <div class="titel">
-                                <h1><a <a href="/stars/<%=user.id%>"><%=user.name%></a></h1>
-                                <h3><%=user.name%></h3>
-                                <div class="stat">
-                                    <img class="start" src="<%=user.stars%>" alt="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="library-flex">
-                            <div class="slider">
-                                <div class="flex">
-                                    <%if(user.books.length > 1){%>
-                                        <%for(let bookImag of user.books){%>
-                                            <img class="liber" src="<%=bookImag%>" alt="">
-                                        <%}%>
-                                    <%}%>
-                                </div>
+                <div class="coco">
+                    <div class="user">
+                        <%if(user.user_image){%>
+                            <img class="logo-user" src="<%=user.user_image%>"  alt="">
+                        <%} else {%>
+                            <img class="logo-user" src="/src/img/Frame 7 1.svg" alt="">
+                        <%}%>
+                        
+                        <div class="titel">
+                            <h1><a href="/stars/<%=user.id%>"><%=user.name%></a></h1>
+                            <h3><%=user.name%></h3>
+                            <div class="stat">
+                                <img class="start" src="<%=user.stars%>" alt="">
                             </div>
                         </div>
                     </div>
-
-                </div>
+                    <div class="library-flex">
+                        <div class="slider">
+                            <div class="flex">
+                                <%if(user.books.length > 1){%>
+                                    <%for(let bookImag of user.books){%>
+                                        <img class="liber" src="<%=bookImag%>" alt="">
+                                    <%}%>
+                                <%}%>
+                            </div>
+                        </div>
+                    </div>
+            </div>
             <%}%>
-
         </div>
     </div>
     <!-- End library -->

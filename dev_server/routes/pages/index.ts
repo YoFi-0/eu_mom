@@ -32,7 +32,8 @@ index.get('/', async(req, res) => {
         stars:string,
         id:number
         books:string[],
-        user_image:string
+        user_image:string,
+        user_id:number
     }[] = []
     const stars_ides:number[] = []
     if(allstars.length != 0){
@@ -56,7 +57,8 @@ index.get('/', async(req, res) => {
                     id:star.publisher_id,
                     stars:`/images/starts/${midStar.stars}_.svg`,
                     books:[],
-                    user_image:''
+                    user_image:'',
+                    user_id:NaN
                 })
             }
         }
@@ -77,7 +79,7 @@ index.get('/', async(req, res) => {
         res.status(500)
         return res.send('server error')
     }
-    if(highePups.length == 0){
+    if(highePups.length == 0 && allstars.length != 0 ){
         console.log('algo is wrong')
         res.status(500)
         return res.send('server error')
@@ -91,6 +93,7 @@ index.get('/', async(req, res) => {
             if(pubStar.id == pub.id){
                 pubStar.name = pub.name
                 pubStar.user_image = pub.image_url
+                pubStar.user_id = pub.user_id
                 var i = 1
                 for(let book of allBoosImages){
                     if(i == 5){
@@ -104,7 +107,10 @@ index.get('/', async(req, res) => {
             }
         }
     }
+    var getUserId
     
+
+   
 
     if(req.session.isLogin && req.session.user_data){
         return res.render('index2', {
@@ -114,7 +120,7 @@ index.get('/', async(req, res) => {
             picture:req.session.user_data.picture,
             user_type:req.session.user_data.type,
             finalArray:finalArray,
-            user_profile: req.session.user_data.type == 'publisher' ? `/stars/${req.session.user_data.id}` : ''
+            user_profile: `/stars/${req.session.pub_id}`,
         })
     }
     return res.render('index2', {

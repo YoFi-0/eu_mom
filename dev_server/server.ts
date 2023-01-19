@@ -35,6 +35,7 @@ declare module 'express-session' {
         user_data:UserSesstinData,
         reg_user_data:RegUserSesstinData,
         msg:string,
+        pub_id:number
     }
 }
 
@@ -44,6 +45,7 @@ type  sokectSEsstion  = {
     user_data:UserSesstinData,
     reg_user_data:RegUserSesstinData,
     msg:string,
+    pub_id:number
 }
 
 app.use('/route', routeRoute)
@@ -179,11 +181,43 @@ const io_get_create_rate = (socket:Socket, session:sokectSEsstion, path:string) 
 
 const io_get_my_books = (socket:Socket, session:sokectSEsstion, path:string) =>{
     socket.on("get_my_books", async(data) => {
+        var pub
+        var  whwreConde
+        if(data?.user_id){
+            whwreConde = {
+                id:data?.user_id
+            }
+        } else {
+            whwreConde = {
+                user_id:session.user_data.id
+            }
+        }
+        try{
+            pub = await PublishersTable.findOne({
+                where:whwreConde
+            })
+        } catch(err){
+            socket.emit('send_my_books', {
+                res:false,
+                data:null,
+                msg:'err'
+            })
+            return
+        }
+        if(!pub){
+            socket.emit('send_my_books', {
+                res:false,
+                data:null,
+                msg:'no_data'
+            })
+            return 
+        }
+        const finalpub:DB_Publishers = pub.get()
         var getAllBooks
         try{
              getAllBooks = await BooksTable.findAll({
              where:{
-                 user_id:data?.user_id ? Number(data?.user_id) : session.user_data.id
+                 user_id:finalpub.user_id
              },
              logging:false
             })

@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "dev": "nodemon ./dev_server/server.ts"
+    "dev": "nodemon ./dev_server/server.ts",
+    "build" :"tsc"
   },
   "name": "yofi_server",
   "version": "1.0.0",
