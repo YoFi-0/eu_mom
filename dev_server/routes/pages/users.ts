@@ -69,7 +69,7 @@ users.get('/:pub_id', async(req, res) => {
         your_stars: your_stars ? your_stars : 0,
         pub_social: finaleUser.social ? JSON.parse(finaleUser.social) : null
     })
-
 })
+
 
 export default users

@@ -5,7 +5,11 @@ import { DB_Publishers, BodyFileType, SocialObj_from_DB_Publishers, DB_Books } f
 import { books_langs, books_types, writeFileExpress } from '../../config/functions'
 import path from 'path'
 import BooksTable from '../../database/models/books'
+import {promisify} from 'util'
+import fs from 'fs'
 const publisher_settings = Router()
+
+const deletFile = promisify(fs.unlink)
 
 publisher_settings.use(isLogin)
 publisher_settings.use(heroSesstion)
@@ -352,6 +356,9 @@ publisher_settings.post('/delete_book', async(req, res) => {
         res.send('invalid data')
         return
     }
+
+    
+    const files_path =  path.join(__dirname, '../../public/publisher_files/books')
     try{
      const isBookDeleted =  await BooksTable.destroy({
             where:{
@@ -362,6 +369,7 @@ publisher_settings.post('/delete_book', async(req, res) => {
         })
         if(isBookDeleted != 0){
             console.log('book deleted')
+            await deletFile(path.join(files_path, `${book_id}-${req.session.user_data!.id}_book_img.png`))
             res.redirect('/publisher_settings/update_book')
             return
         } else {
@@ -378,6 +386,3 @@ publisher_settings.post('/delete_book', async(req, res) => {
 
 export default publisher_settings
 
-function promisify(mv: Function) {
-    throw new Error('Function not implemented.')
-}

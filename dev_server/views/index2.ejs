@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/src/scss/index.css">
     <link rel="stylesheet" href="/src/scss/Home.css">
     <script defer src="/src/javascript/index.js"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -31,17 +32,14 @@
 
                 <div class="saerh">
                     <a class="link" href="#"><i class="fas fa-search"></i></a>
-                    <input type="text" placeholder="البحث">
+                    <input type="text" id="search" placeholder="البحث">
 
                     <div class="saerh-disblie">
-                        <div class="conteiner">
+                        <div class="conteiner" id="searchs">
                             <div class="card">
                                 <img src="/src/img/Frame 7 1.svg" alt="">
                                 <div class="taitel">
                                     <h1>دار محمد ناصر</h1>
-                                    <div class="icons">
-                                        <img class="star" src="/src/img/Frame 13.svg" alt="">
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -125,32 +123,38 @@
 
             <div class="allbox">
 
-                <div class="coco">
-                    <div class="user">
-                        <img class="logo-user" src="/src/img/Frame 7 1.svg" alt="">
-                        <div class="titel">
-                            <h1>دار محمد ناصر</h1>
-                            <h3>دار محمد ناصر</h3>
-                            <div class="stat">
-                                <img class="start" src="/src/img/Frame 13.svg" alt="">
+                <%for(let user of finalArray){%>
+                    <div class="coco">
+                        <div class="user">
+                            <%if(user.user_image){%>
+                                <img class="logo-user" src="<%=user.user_image%>"  alt="">
+                            <%} else {%>
+                                <img class="logo-user" src="/src/img/Frame 7 1.svg" alt="">
+                            <%}%>
+                           
+                            <div class="titel">
+                                <h1><a <a href="/stars/<%=user.id%>"><%=user.name%></a></h1>
+                                <h3><%=user.name%></h3>
+                                <div class="stat">
+                                    <img class="start" src="<%=user.stars%>" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="library-flex">
+                            <div class="slider">
+                                <div class="flex">
+                                    <%if(user.books.length > 1){%>
+                                        <%for(let bookImag of user.books){%>
+                                            <img class="liber" src="<%=bookImag%>" alt="">
+                                        <%}%>
+                                    <%}%>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="library-flex">
-                        <div class="slider">
-                            <div class="flex">
-                                <img class="liber" src="/src/img/download.jpg" alt="">
-                                <img class="liber" src="/src/img/download.jpg" alt="">
-                                <img class="liber" src="/src/img/download.jpg" alt="">
-                                <img class="liber" src="/src/img/download.jpg" alt="">
-                                <img class="liber" src="/src/img/download.jpg" alt="">
 
-                            </div>
-                        </div>
-                    </div>
                 </div>
-
-            </div>
+            <%}%>
 
         </div>
     </div>
@@ -166,21 +170,21 @@
 
                 <div class="alllbro">
                     <div class="form-contact">
-                        <form action="">
+                        <form>
                             <div class="total">
-                                <h1>Your name</h1>
+                                <h1>إسمك</h1>
                                 <input type="text" placeholder="name">
                             </div>
                             <div class="total">
-                                <h1>Your email</h1>
+                                <h1>إيميلك</h1>
                                 <input type="email" placeholder="email">
                             </div>
                             <div class="total">
-                                <h1>Your Message</h1>
+                                <h1>راسلتك</h1>
                                 <textarea class="input" placeholder="Tell Us About Your Needs" name="message"></textarea>
                             </div>
                             <div class="submitt">
-                                <input type="submit">
+                                <input type="submit" value="ارسال">
                                 <i class="fa-regular fa-paper-plane"></i>
                             </div>
                         </form>

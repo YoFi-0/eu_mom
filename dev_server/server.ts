@@ -19,10 +19,11 @@ const io = new Server(server, {cors: {origin: `${process.env.PROTOCOL}://${proce
 
 
 import { Connection } from './database/connection'
-import { DB_Books, DB_Stars, DB_Users, GoogleUser, RegUserSesstinData, UserSesstinData } from './config/types'
+import { DB_Books, DB_Publishers, DB_Stars, DB_Users, GoogleUser, RegUserSesstinData, UserSesstinData } from './config/types'
 import PublishersTable from './database/models/publishers'
 import BooksTable from './database/models/books'
 import StarsTable from './database/models/stars'
+import { Op } from 'sequelize'
 server_config(app, express)
 
 
@@ -81,7 +82,54 @@ io.on('connection', (socket) => {
     }
     io_get_my_books(socket, session, httpPath)
     io_get_create_rate(socket, session, httpPath)
+    io_get_pub(socket, session, httpPath)
 });
+
+
+// const where = {
+//     from: {
+//         $between: [startDate, endDate]
+//     }
+// };
+
+const io_get_pub =  (socket:Socket, session:sokectSEsstion, path:string) =>{
+    socket.on('get_pub', async(data) => {
+        if((!data.from && data.from != 0) || !data.value){
+            console.log('returned')
+            return
+        }
+        var record
+        try{
+            record = await PublishersTable.findAll({
+                where:{
+                    name:{[Op.like]: `%${data.value}%`},
+                },
+                offset:data.from,
+                limit:10,
+                logging:false
+            })
+            if(record.length == 0){
+                return socket.emit('send_pub', {
+                    res:false,
+                    data:null,
+                    msg:'no_record'
+                })
+            }
+            return socket.emit('send_pub', {
+                res:true,
+                data:record.map(value => value.get()),
+                msg:'ok'
+            })
+        } catch(err){
+            console.log(err)
+            return socket.emit('send_pub', {
+                res:false,
+                data:null,
+                msg:'err'
+            })
+        }
+    })
+}
 
 const io_get_create_rate = (socket:Socket, session:sokectSEsstion, path:string) =>{
     socket.on('get_create_rate', async(data) => {
@@ -136,7 +184,7 @@ const io_get_my_books = (socket:Socket, session:sokectSEsstion, path:string) =>{
              getAllBooks = await BooksTable.findAll({
              where:{
                  user_id:data?.user_id ? Number(data?.user_id) : session.user_data.id
-             } as DB_Books,
+             },
              logging:false
             })
         } catch(err){

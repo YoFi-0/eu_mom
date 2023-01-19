@@ -672,6 +672,9 @@ header .not_login img {
   text-shadow: 6px 4px 4px #000000;
   z-index: 1;
 }
+.library .container .allbox .coco .user .titel h1 a {
+  color: #FFF;
+}
 .library .container .allbox .coco .user .titel .stat {
   text-align: right;
   margin-top: max(1vw, 1em);
@@ -716,6 +719,8 @@ header .not_login img {
   vertical-align: middle;
   border-radius: 9px;
   box-shadow: -3px -3px 2px white;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 /* End library */
