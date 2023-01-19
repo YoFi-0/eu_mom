@@ -282,8 +282,9 @@ publisher_settings.post('/update_book', async(req, res) => {
         return
     }
 
+    var isBookFound
     try{
-       const isBookFound =  BooksTable.findOne({
+        isBookFound =  await BooksTable.findOne({
             where:{
                 id:Number(id_of_the_book),
                 user_id:Number(req.session.user_data?.id)
@@ -315,13 +316,14 @@ publisher_settings.post('/update_book', async(req, res) => {
             return
         }
     }
+    const db_book:DB_Books = isBookFound.get()
     try{
         await BooksTable.update({
-            book_name:name_of_the_book,
-            book_prints:Number(prints_of_the_book),
-            book_type:type_of_the_book,
-            writer_email:email_of_the_writer,
-            writer_name:name_of_the_writer,
+            book_name:name_of_the_book ? name_of_the_book : db_book.book_name,
+            book_prints: prints_of_the_book ? Number(prints_of_the_book) : db_book.book_prints,
+            book_type:type_of_the_book ? type_of_the_book : db_book.book_type,
+            writer_email:email_of_the_writer ?email_of_the_writer : db_book.writer_email,
+            writer_name:name_of_the_writer ? name_of_the_writer :db_book.writer_name ,
             book_image_url:`/publisher_files/books/${id_of_the_book}-${req.session.user_data!.id}_book_img.png`
         } as DB_Books, {
             logging: false,

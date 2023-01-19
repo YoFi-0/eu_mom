@@ -10,15 +10,16 @@ const index = Router()
 
 index.get('/', (req, res) => {
     if(req.session.isLogin && req.session.user_data){
-        return res.render('index', {
+        return res.render('index2', {
             isLogin:true,
             username:req.session.user_data.name,
             email:req.session.user_data.email,
             picture:req.session.user_data.picture,
-            user_type:req.session.user_data.type
+            user_type:req.session.user_data.type,
+            user_profile: req.session.user_data.type == 'publisher' ? `/stars/${req.session.user_data.id}` : ''
         })
     }
-    return res.render('index', {
+    return res.render('index2', {
         isLogin:false
     })
 })

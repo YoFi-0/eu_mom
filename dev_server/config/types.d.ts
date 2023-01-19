@@ -36,6 +36,12 @@ export type DB_Publishers = {
     image_url:string
 }
 
+export type DB_Stars = {
+    user_id:number
+    publisher_id:number
+    stars:number
+}
+
 export type SocialObj_from_DB_Publishers = {
     facebook:string,
     twitter:string,

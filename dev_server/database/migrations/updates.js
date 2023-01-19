@@ -118,6 +118,33 @@ module.exports = {
           allowNull: false,
         }
     })
+    await queryInterface.createTable('stars', {
+      user_id:{
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+            model: 'users',
+            key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
+      publisher_id:{
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+            model: 'publishers',
+            key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
+      stars:{
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+    })
+    
   },
   // @ts-ignore
   async down(queryInterface, Sequelize) {

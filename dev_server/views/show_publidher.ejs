@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اسم الدار</title>
+    <link rel="stylesheet" href="/swiper/style.css">
+    <link rel="stylesheet" href="/all/css/all.min.css">
+    <link rel="stylesheet" href="/publisher_profaile/styles/index.css">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script>
+</head>
+<body>
+        <div style="display: none;" id="form_book_type_2">
+            <%for(let type of books_types){%>
+                <p data-value="<%=type.value%>"><%=type.ar_name%></p>
+            <%}%>
+        </div>
+        <!-- Start header  -->
+    <i id="show_header" class="fa-solid fa-bars nav_show"></i>
+    <header id="header">
+        <i id="hied_header" class="fa-solid fa-x x_close"></i>
+
+        <div class="flexUl">
+            <ul>
+                <li><a href="/">رفوف المحبوبين </a></li>
+                <li><a href="/">التواصل</a></li>
+                <li><a href="/">نبذة عنا</a></li>
+                <li><a href="/">راسلتك</a></li>
+
+                <div class="saerh">
+                    <a class="link" href="#"><i class="fas fa-search"></i></a>
+                    <input type="text" placeholder="البحث">
+
+                    <div class="saerh-disblie">
+                        <div class="conteiner lolo">
+                            <div class="card">
+                                <img src="/images/smo_logo.svg" alt="">
+                                <div class="taitel">
+                                    <h1>دار محمد ناصر</h1>
+                                    <div class="icons">
+                                        <img class="star" src="/images/starts/2_.svg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <img src="/images/smo_logo.svg" alt="">
+                                <div class="taitel">
+                                    <h1>دار محمد ناصر</h1>
+                                    <div class="icons">
+                                        <img class="star" src="/images/starts/2_.svg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <img src="/images/smo_logo.svg" alt="">
+                                <div class="taitel">
+                                    <h1>دار محمد ناصر</h1>
+                                    <div class="icons">
+                                        <img class="star" src="/images/starts/2_.svg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ul>
+            <div class="soshel">
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-instagram"></i>
+            </div>
+        </div>
+        <div>
+            <img src="/images/smo_logo.svg" alt="">
+        </div>
+    </header>
+    <!-- End header  -->
+    <section class="card" id="user_card">
+        <%if(pub_data.image_url){%>
+        <div class="imag">
+            <img style="border-radius: 50%;" src="<%=pub_data.image_url%>">
+        </div>
+        <%} else {%>
+            <div class="imag" style="padding: max(0.5vw, 0.5em);">
+                <img src="/images/user.png">
+            </div>
+        <%}%>
+        <p class="publusher_name"><span>دار : </span><%=pub_data.name%></p>
+        <div class="stars">
+            <img src="<%=image_path_style%>" alt="stars">
+        </div>
+        <div class="your_stars">
+            <p>تقيمك : </p>
+            <div class="server_stars">
+                <%for(let i in arrayNum5){%>
+                    <%if(i == 0){%>
+                        <%continue%>
+                    <%}%>
+                    <%if(i <= your_stars){%>
+                        <img src="/images/starts/star_f.svg">
+                    <%} else {%>
+                        <img src="/images/starts/star_e.svg">
+                    <%}%>
+                <%}%>
+            </div>
+        </div>
+        <div class="info">
+            <div class="location">
+                <p><span>البلد : </span><%=pub_data.location.split('_----_')[0]%></p>
+                <p><span>المدينة : </span><%=pub_data.location.split('_----_')[1]%></p>
+            </div>
+            <div class="array">
+                <p class="title">انواع الكتب</p>
+                <div class="items">
+                    <%for(let type of books_types){%>
+                        <%if(pub_data.books_types.split('-').includes(type.value)){%>
+                            <p data-value="<%=type.value%>"><%=type.ar_name%></p>
+                        <%}%>
+                    <%}%>
+                </div>
+            </div>
+            <div class="array">
+                <p class="title">لغات الكتب</p>
+                <div class="items">
+                    <%for(let lang of books_langs){%>
+                        <%if(pub_data.books_langs.split('-').includes(lang.value)){%>
+                            <p data-value="<%=lang.value%>"><%=lang.ar_name%></p>
+                        <%}%>
+                    <%}%>
+                </div>
+            </div>
+        </div>
+        <div class="margin"></div>
+        <div class="social">
+            <%if(pub_social){%>
+                <%if(pub_social.phone){%>
+                    <p class="phone"><span><i class="fa-solid fa-phone"> : </i></span><%=pub_social.phone%></p>
+                <%}%>
+                <p class="id"><a href="<%=licensFile%>">الرخصة</a></p>
+                <div class="icons">
+                    <%if(pub_social.facebook){%>
+                        <a href="<%=pub_social.facebook%>"><i class="fa-brands fa-square-facebook"></i></a>
+                    <%}%>
+                    <%if(pub_social.twitter){%>
+                        <a href="<%=pub_social.twitter%>"><i class="fa-brands fa-square-twitter"></i></a>
+                    <%}%>
+                    <%if(pub_social.instagram){%>
+                        <a href="<%=pub_social.instagram%>"><i class="fa-brands fa-square-instagram"></i></a>
+                    <%}%>
+            <%}%>
+            </div>
+        </div>
+    </section>
+    <section class="books">
+        <!-- <div data-book_name="كيف تطبخ علي" data-writer_name="محمد عيسى"  data-writer_email="lala@lala.com" data-prints="3"  data-book_type="lala" class="book">
+            <img src="https://www.aljazeera.net/wp-content/uploads/2022/04/%D8%B5%D9%88%D8%B1%D8%A9-%D8%B1%D8%A6%D9%8A%D8%B3%D9%8A%D8%A9-%D9%85%D9%8A%D8%AF%D8%A7%D9%86-60.png?resize=1200%2C675" alt="book_name">
+        </div> -->
+    </section>
+    <section class="book_show">
+        <button class="back_to_user"><i class="fa-solid fa-backward"></i></button>
+        <div class="all_infos">
+            <div class="profaile">
+                <%if(pub_data.image_url){%>
+                    <div class="user_image">
+                        <img style="border-radius: 50%;" src="<%=pub_data.image_url%>">
+                    </div>
+                <%} else {%>
+                    <div class="user_image" style="padding: max(0.5vw, 0.5em);">
+                        <img src="/images/user.png">
+                    </div>
+                <%}%>
+                <div class="name_stars">
+                    <p><%=pub_data.name%></p>
+                    <img src="<%=image_path_style%>">
+                </div>
+    
+            </div>
+            <p class="type"> نوع الكتاب : <span id="book_type"></span></p>
+            <div class="rest_info">
+                <p> اسم المؤلف : <span id="book_writer"></span></p>
+                <p> البريد الإلكتروني للمؤلف : <span id="witer_email"></span></p>
+                <p> إسم الكتاب : <span id="Book_name"> </span></p>
+                <p> عدد طبعات الكتاب : <span id="book_prints"></span></p>
+            </div>
+        </div>
+        <div class="book">
+            <img id="book_image" alt="book_name">
+        </div>
+        <div class="backcollor"></div>
+    </section>
+    <script>
+        
+    </script>
+    <script src="/publisher_profaile/scripts/index.js"></script>
+</body>
+</html>

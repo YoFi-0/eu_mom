@@ -6,6 +6,7 @@ import indexRoute from './routes/pages'
 import {config} from 'dotenv'
 // import apiRoute from './routes/APIs/api'
 import { isProduction, port } from './config/functions'
+import usersRoute from './routes/pages/users'
 import GoogleRoute from './routes/pages/google'
 import publisher_settingsRoute from './routes/pages/publisher_settings'
 import complete_regRoute from './routes/pages/complete_reg'
@@ -18,9 +19,10 @@ const io = new Server(server, {cors: {origin: `${process.env.PROTOCOL}://${proce
 
 
 import { Connection } from './database/connection'
-import { DB_Books, DB_Users, GoogleUser, RegUserSesstinData, UserSesstinData } from './config/types'
+import { DB_Books, DB_Stars, DB_Users, GoogleUser, RegUserSesstinData, UserSesstinData } from './config/types'
 import PublishersTable from './database/models/publishers'
 import BooksTable from './database/models/books'
+import StarsTable from './database/models/stars'
 server_config(app, express)
 
 
@@ -47,6 +49,7 @@ app.use('/route', routeRoute)
 app.use('/', indexRoute)
 // app.use('/api', apiRoute)
 app.use('/google', GoogleRoute)
+app.use('/stars', usersRoute)
 app.use('/complete_reg', complete_regRoute)
 app.use('/publisher_settings', publisher_settingsRoute)
 
@@ -77,20 +80,62 @@ io.on('connection', (socket) => {
         return
     }
     io_get_my_books(socket, session, httpPath)
+    io_get_create_rate(socket, session, httpPath)
 });
 
+const io_get_create_rate = (socket:Socket, session:sokectSEsstion, path:string) =>{
+    socket.on('get_create_rate', async(data) => {
+        if(!data.pu_id || !data.rate){
+            return
+        }
+        if(!session.user_data || !session.user_data.id){
+            return socket.emit('send_create_rate',{
+                res:false,
+                msg:'not_login'
+            })
+        }
+        try{
 
+           const isUpdated =  await StarsTable.update({
+                stars:data.rate
+            } as DB_Stars, {
+                where:{
+                    publisher_id:data.pu_id,
+                    user_id:session.user_data.id
+                } as DB_Stars,
+                logging:false
+            })
+            if(isUpdated[0] == 0){
+                await StarsTable.create({
+                    stars:data.rate,
+                    publisher_id:data.pu_id,
+                    user_id:session.user_data.id
+                } as DB_Stars, {
+                    logging:false
+                })
+            }
+            return socket.emit('send_create_rate',{
+                res:true,
+                msg:'not_login'
+            })
+            
+        } catch(err){
+            console.log(err)
+            return socket.emit('send_create_rate',{
+                res:false,
+                msg:'err'
+            })
+        }
+    })
+}
 
 const io_get_my_books = (socket:Socket, session:sokectSEsstion, path:string) =>{
-    if(path != '/publisher_settings/update_book/'){
-        return
-    }
-    socket.on("get_my_books", async(...args) => {
+    socket.on("get_my_books", async(data) => {
         var getAllBooks
         try{
              getAllBooks = await BooksTable.findAll({
              where:{
-                 user_id:session.user_data.id
+                 user_id:data?.user_id ? Number(data?.user_id) : session.user_data.id
              } as DB_Books,
              logging:false
             })

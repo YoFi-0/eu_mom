@@ -18,11 +18,12 @@
     <h1>yofi server</h1>
     <% if(isLogin){ %>
         <form action="/log_out" method="POST">
-            <input type="submit" value="log out">
+            <input type="submit" value="j">
         </form>
     <%}%>
     <% if(isLogin && user_type == "publisher"){ %>
         <a href="/publisher_settings">update</a>
+        <a href="<%=user_profile%>">profaile</a>
     <%}%>
 </body>
 </html>
